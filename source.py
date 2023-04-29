@@ -72,11 +72,18 @@ def scores():
 # Dispaly Game Over
 def gameover():
     font = pygame.font.Font('freesansbold.ttf', 60)
-    game_over = font.render("GAME OVER", True, (222, 224, 215))
+    your_score = pygame.font.Font('freesansbold.ttf', 30)
+    game_over = font.render("GAME OVER!!", True, (222, 224, 215))
+    continue_font = pygame.font.Font('freesansbold.ttf', 30)
+    continue_render = continue_font.render('Please press ENTER to Continue', True, (186, 194, 188))
+    your_score_render = your_score.render('Your Score : {}'.format(score), True, (106, 247, 142))
+    screen.blit(your_score_render, (260,400))
+    screen.blit(continue_render, (170,180))
     screen.blit(game_over, (230,280))
 
 running = True
 count = 10000
+
 
 #Running Game Loop till 10000
 while running:
@@ -102,10 +109,15 @@ while running:
             if event.key == pygame.K_SPACE:
                 state = True
                 bullet_change = -10
+            if event.key == pygame.K_KP_ENTER or event.key == pygame.KSCAN_KP_ENTER:
+                print("pressed enter")
+                count= 10000
+                score = 0
                 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT or event.key == pygame.K_SPACE:
                 change = 0
+                
                 #bullet_change = -0.2
                 #state = False
                 
@@ -139,7 +151,6 @@ while running:
         # increasing score based on collisions
         if isCollision(bulletX, bulletY, alien_x[i], alien_y[i]) :
             score += 1
-            print (score)
             alien_x[i] = random.randint(40, 800)
             alien_y[i] = random.randint(40, 150)
 
@@ -163,7 +174,7 @@ while running:
     ship_display(shipX, shipY)
 
     #Ending the game for Timeout
-    if count < 1000:
+    if count < 2000:
         gameover()
 
     #updating screen every single iteration
